@@ -79,6 +79,19 @@ body {
   position: relative;
 }
 
+/* Base glowing blobs for glassmorphism refraction */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 15% 40%, rgba(217, 124, 82, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(132, 163, 130, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(219, 101, 101, 0.15) 0%, transparent 50%);
+  z-index: 0;
+}
+
 /* Premium global paper texture */
 body::after {
   content: "";
@@ -96,7 +109,12 @@ body::after {
   max-height: 900px;
   width: 100%;
   max-width: 1400px;
-  background-color: var(--surface-color);
+  /* Frosted Glass Effect */
+  background-color: rgba(255, 252, 247, 0.75); 
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg); /* Use the new premium layered shadow */
   overflow: hidden;
@@ -107,13 +125,12 @@ body::after {
 /* --- Sidebar --- */
 .sidebar {
   width: 280px;
-  background-color: var(--bg-color);
-  /* The sidebar uses the warm cream instead */
+  background-color: rgba(248, 241, 235, 0.5); /* Semi-transparent warm beige */
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
   gap: 24px; /* Slightly reduced gap since we can collapse */
-  border-right: 1px solid var(--border-color);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 /* Prevent sidebar items from squishing on short screens */
@@ -244,7 +261,10 @@ ul {
 }
 
 .progress-container {
-  background: var(--surface-color);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   padding: 16px;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -278,8 +298,7 @@ ul {
   flex: 1;
   padding: 48px 60px;
   overflow-y: auto;
-  background-color: var(--surface-color);
-  /* Brightest white part */
+  background-color: transparent; /* Lets the background translucent blobs shine through */
 }
 
 .mobile-nav {
@@ -427,8 +446,10 @@ select:focus {
   display: flex;
   align-items: center;
   padding: 16px 20px;
-  background: var(--surface-color);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 252, 247, 0.6); /* Translucent glass */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8); /* Sharp glass edge */
   border-radius: var(--radius-lg);
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.7), var(--shadow-sm); /* Premium inset highlight */
   transition: box-shadow var(--transition-normal), transform var(--transition-normal), border-color var(--transition-normal);
@@ -455,7 +476,7 @@ select:focus {
 
 .task-card.completed {
   opacity: 0.6;
-  background-color: #fafafa;
+  background-color: rgba(250, 250, 250, 0.4);
 }
 
 .task-card.completed .task-title {
@@ -621,7 +642,10 @@ select:focus {
 }
 
 .modal-content {
-  background-color: var(--surface-color);
+  background-color: rgba(255, 252, 247, 0.85); /* Frosty modal */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   width: 100%;
   max-width: 500px;
   border-radius: var(--radius-lg);
