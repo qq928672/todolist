@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     UI.init(taskManager);
   } catch (error) {
     console.error("載入失敗:", error);
-    alert("連線至雲端資料庫失敗，請確認 GAS 設定或稍後再試！");
+    alert("程式出現錯誤：\n" + error.toString() + "\n\n如果有看懂請告訴我，不然就把這段截圖發給我！");
   } finally {
     // 關閉載入畫面
     UI.hideLoadingOverlay();
