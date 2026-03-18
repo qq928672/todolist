@@ -157,6 +157,18 @@
     </div>
   </div>
 
+  <!-- User Login Overlay -->
+  <div class="modal-overlay active" id="login-overlay" style="display: none; z-index: 100000; background: rgba(255, 252, 247, 0.95); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);">
+    <div class="login-content" style="text-align: center; padding: 48px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); background: white; border: 1px solid rgba(255, 255, 255, 0.8);">
+      <h2 style="font-size: 1.8rem; letter-spacing: -0.03em; margin-bottom: 8px; color: var(--text-primary);">您好，今天過得好嗎？</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 24px;">請輸入一個專屬於您的本子代號</p>
+      <form id="login-form">
+        <input type="text" id="username-input" placeholder="例如：Alex 或 小明..." required style="width: 100%; border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 16px; font-size: 1.1rem; text-align: center; margin-bottom: 24px; outline: none; transition: border-color var(--transition-fast);">
+        <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; font-size: 1.1rem;">打開專屬手帳本</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Entry point for JS modules -->
   <script type="module" src="js/main.js"></script>
 </body>

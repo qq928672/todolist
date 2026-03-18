@@ -4,24 +4,41 @@
  * 負責綁定事件與初始化應用程式
  */
 import { taskManager } from './tasks.js';
+import { Storage } from './storage.js';
 import { UI } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 顯示載入畫面
-  UI.showLoadingOverlay();
-  
-  try {
-    // 等待雲端載入完成
-    await taskManager.loadTasks();
-    
-    // 1. 初始化 UI
-    UI.init(taskManager);
-  } catch (error) {
-    console.error("載入失敗:", error);
-    alert("程式出現錯誤：\n" + error.toString() + "\n\n如果有看懂請告訴我，不然就把這段截圖發給我！");
-  } finally {
-    // 關閉載入畫面
-    UI.hideLoadingOverlay();
+  const loginOverlay = document.getElementById('login-overlay');
+  const loginForm = document.getElementById('login-form');
+  const usernameInput = document.getElementById('username-input');
+
+  const startApp = async () => {
+    UI.showLoadingOverlay();
+    try {
+      await taskManager.loadTasks();
+      UI.init(taskManager);
+    } catch (error) {
+      console.error("載入失敗:", error);
+      alert("程式出現錯誤：\n" + error.toString() + "\n\n如果有看懂請告訴我，不然就把這段截圖發給我！");
+    } finally {
+      UI.hideLoadingOverlay();
+    }
+  };
+
+  // 驗證登入狀態 (Pseudo-Login)
+  if (!Storage.getUserId()) {
+    loginOverlay.style.display = 'flex';
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = usernameInput.value.trim();
+      if (username) {
+        Storage.setUserId(username);
+        loginOverlay.style.display = 'none';
+        startApp();
+      }
+    });
+  } else {
+    startApp();
   }
 
   // 1.5 處理 RWD Sidebar 邏輯

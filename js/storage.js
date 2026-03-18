@@ -7,17 +7,34 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbxaPV8Bzidde0kLm74q00s7
 
 export const Storage = {
   /**
+   * 取得使用者的 ID
+   */
+  getUserId: () => {
+    return localStorage.getItem('task_tracker_userid') || null;
+  },
+
+  /**
+   * 設定使用者的 ID
+   */
+  setUserId: (userId) => {
+    localStorage.setItem('task_tracker_userid', userId);
+  },
+
+  /**
    * 取得所有任務資料
    * @returns {Promise<Array>} 任務陣列
    */
   getTasks: async () => {
+    const userId = Storage.getUserId();
+    if (!userId) return []; // 未登入
+
     try {
       const response = await fetch(GAS_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8',
         },
-        body: JSON.stringify({ action: 'read' })
+        body: JSON.stringify({ action: 'read', userId })
       });
       const data = await response.json();
       // data 應該是由 GAS 回傳的任務陣列
@@ -34,13 +51,16 @@ export const Storage = {
    * @param {Array} tasks - 任務陣列
    */
   saveTasks: async (tasks) => {
+    const userId = Storage.getUserId();
+    if (!userId) return; // 未登入
+
     try {
       await fetch(GAS_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8',
         },
-        body: JSON.stringify({ action: 'saveAll', tasks: tasks })
+        body: JSON.stringify({ action: 'saveAll', tasks: tasks, userId })
       });
     } catch (error) {
       console.error("Failed to sync to Notion:", error);
