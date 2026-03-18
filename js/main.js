@@ -6,9 +6,23 @@
 import { taskManager } from './tasks.js';
 import { UI } from './ui.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. 初始化 UI
-  UI.init();
+document.addEventListener('DOMContentLoaded', async () => {
+  // 顯示載入畫面
+  UI.showLoadingOverlay();
+  
+  try {
+    // 等待雲端載入完成
+    await taskManager.loadTasks();
+    
+    // 1. 初始化 UI
+    UI.init(taskManager);
+  } catch (error) {
+    console.error("載入失敗:", error);
+    alert("連線至雲端資料庫失敗，請確認 GAS 設定或稍後再試！");
+  } finally {
+    // 關閉載入畫面
+    UI.hideLoadingOverlay();
+  }
 
   // 1.5 處理 RWD Sidebar 邏輯
   const btnToggleSidebar = document.getElementById('btn-toggle-sidebar');

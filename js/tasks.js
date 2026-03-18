@@ -6,12 +6,15 @@ import { Storage } from './storage.js';
 
 class TaskManager {
   constructor() {
-    this.tasks = Storage.getTasks();
+    this.tasks = []; // Now loads dynamically via loadTasks()
     // 預設狀態
     this.currentFilter = 'all'; // all, today, active, completed
     this.currentCategory = 'all'; // all, work, personal, study
     this.currentSort = 'created-desc';
-    
+  }
+
+  async loadTasks() {
+    this.tasks = await Storage.getTasks();
     // 初始化時重置習慣打卡
     this.resetHabits();
   }

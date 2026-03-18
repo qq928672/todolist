@@ -41,6 +41,21 @@ export const UI = {
     btnCancel: document.getElementById('btn-cancel'),
   },
 
+  showLoadingOverlay: () => {
+    const overlay = document.createElement('div');
+    overlay.id = 'global-loading';
+    overlay.innerHTML = `
+      <div class="spinner"></div>
+      <p style="margin-top: 16px; font-weight: bold; font-family: 'M PLUS Rounded 1c', sans-serif; color: var(--text-primary)">連線至雲端資料庫...</p>
+    `;
+    document.body.appendChild(overlay);
+  },
+
+  hideLoadingOverlay: () => {
+    const overlay = document.getElementById('global-loading');
+    if (overlay) overlay.remove();
+  },
+
   init() {
     this.updateDateDisplay();
     this.renderTasks();
