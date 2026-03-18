@@ -60,10 +60,14 @@
   padding: 0;
 }
 
+input, button, textarea, select {
+  font-family: inherit;
+}
+
 /* --- Layout --- */
 /* --- Layout --- */
 body {
-  font-family: 'Nunito', 'M PLUS Rounded 1c', sans-serif; /* Cute, rounded Japanese typography */
+  font-family: 'Nunito', 'Varela Round', 'TsukuARdGothic-Regular', 'cwTeXYen', 'M PLUS Rounded 1c', 'Zen Maru Gothic', 'Microsoft JhengHei', sans-serif; /* Thorough rounded fallback stack */
   background-color: #E6DCD1;
   color: var(--text-primary);
   line-height: 1.5;
