@@ -36,19 +36,21 @@
   --priority-low: #E2EBDC;
   --priority-low-text: #597350;
 
-  /* Shadows & Radii */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  /* Shadows & Radii (Premium Stacked) */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.12);
+  --shadow-sm: 0 2px 4px rgba(100, 85, 75, 0.04), 0 1px 2px rgba(100, 85, 75, 0.02);
+  --shadow-md: 0 6px 16px rgba(100, 85, 75, 0.06), 0 2px 6px rgba(100, 85, 75, 0.03);
+  --shadow-lg: 0 20px 40px rgba(100, 85, 75, 0.08), 0 8px 16px rgba(100, 85, 75, 0.04);
+  --shadow-hover: 0 12px 28px rgba(100, 85, 75, 0.1), 0 4px 10px rgba(100, 85, 75, 0.05);
 
-  /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s ease;
+  /* Transitions (Buttery smooth) */
+  --transition-fast: 0.2s cubic-bezier(0.2, 0, 0, 1);
+  --transition-normal: 0.4s cubic-bezier(0.2, 0, 0, 1);
+
+  --texture-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opactiy='0.5'/%3E%3C/svg%3E");
 }
 
 /* --- Resets & Baseline --- */
@@ -59,10 +61,10 @@
 }
 
 /* --- Layout --- */
+/* --- Layout --- */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', 'M PLUS Rounded 1c', sans-serif; /* Cute, rounded Japanese typography */
   background-color: #E6DCD1;
-  /* Darker warm beige background for the full window */
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -71,30 +73,35 @@ body {
   align-items: center;
   justify-content: center;
   padding: 48px 24px;
-  /* More padding top/bottom */
   margin: 0;
   height: 100vh;
-  /* Lock body to exact window height */
   overflow: hidden;
-  /* Prevent body scrollbar */
+  position: relative;
+}
+
+/* Premium global paper texture */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  background-image: var(--texture-noise);
+  opacity: 0.05; /* Subtle noise makes it look like real paper/matte finish */
+  z-index: 9999;
 }
 
 .app-container {
   display: flex;
   height: 100%;
-  /* Take up the remaining height inside the padding */
   max-height: 900px;
-  /* Optional: Keep the app from getting absurdly tall on huge screens */
   width: 100%;
   max-width: 1400px;
   background-color: var(--surface-color);
-  /* The actual app is now warm white *not* beige */
   border-radius: var(--radius-lg);
-  /* Rounded corners like a journal */
-  box-shadow: 0 20px 40px rgba(100, 80, 70, 0.1);
-  /* Soft brown shadow */
+  box-shadow: var(--shadow-lg); /* Use the new premium layered shadow */
   overflow: hidden;
-  /* Keep rounded corners clean */
+  position: relative;
+  z-index: 1;
 }
 
 /* --- Sidebar --- */
@@ -124,14 +131,14 @@ body {
 .brand h1 {
   font-size: 1.25rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em; /* Tighter letter spacing for premium typography */
 }
 
 .sidebar-section h3 {
   font-size: 0.75rem;
   text-transform: uppercase;
   color: var(--text-secondary);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em; /* Slightly wider for uppercase subheadings */
   font-weight: 600;
 }
 
@@ -296,10 +303,11 @@ ul {
 }
 
 .header-titles h2 {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 600;
   margin-bottom: 4px;
   color: var(--text-primary);
+  letter-spacing: -0.03em;
 }
 
 .date-subtitle {
@@ -422,17 +430,15 @@ select:focus {
   background: var(--surface-color);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  /* More rounded */
-  box-shadow: 0 4px 12px rgba(110, 95, 85, 0.05);
-  /* Warm soft shadow */
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.7), var(--shadow-sm); /* Premium inset highlight */
   transition: box-shadow var(--transition-normal), transform var(--transition-normal), border-color var(--transition-normal);
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.4s var(--transition-normal) forwards;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(16px);
   }
 
   to {
@@ -442,11 +448,9 @@ select:focus {
 }
 
 .task-card:hover {
-  box-shadow: 0 8px 24px rgba(110, 95, 85, 0.12);
-  /* Warm hover shadow */
-  transform: translateY(-2px);
-  border-color: #CAB6A5;
-  /* Visible hover border */
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.9), var(--shadow-hover);
+  transform: translateY(-4px); /* Lift up effect */
+  border-color: #C8B9AD;
 }
 
 .task-card.completed {
@@ -462,27 +466,37 @@ select:focus {
 /* Checkbox Styling */
 .task-checkbox {
   appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border: 2px solid var(--border-color);
   border-radius: 50%;
   margin-right: 16px;
   cursor: pointer;
   position: relative;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-normal);
   flex-shrink: 0;
+  background: #FCF9F6;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.04); /* Indented look */
 }
 
 .task-checkbox:checked {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
+  box-shadow: inset 0 0 0 rgba(0,0,0,0);
+  animation: popIn var(--transition-fast);
+}
+
+@keyframes popIn {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 .task-checkbox:checked::after {
   content: '';
   position: absolute;
-  top: 4px;
-  left: 7px;
+  top: 5px;
+  left: 8px;
   width: 5px;
   height: 10px;
   border: solid white;
@@ -492,6 +506,8 @@ select:focus {
 
 .task-checkbox:hover {
   border-color: var(--primary-color);
+  background: white;
+  transform: scale(1.05);
 }
 
 /* Task Content */
