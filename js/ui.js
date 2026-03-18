@@ -114,8 +114,12 @@ export const UI = {
       const categoryMap = {
         work: { text: '工作', class: 'badge-work' },
         personal: { text: '個人', class: 'badge-personal' },
-        study: { text: '學習', class: 'badge-study' }
+        study: { text: '學習', class: 'badge-study' },
+        all: { text: '未分類', class: 'badge-personal' } // Fallback for empty Notion rows
       };
+
+      const cObj = categoryMap[task.category] || categoryMap.all;
+      const pObj = priorityMap[task.priority] || priorityMap.low;
 
       let descHtml = task.description ? `<div class="task-description">${this.escapeHTML(task.description)}</div>` : '';
       let habitHtml = task.isHabit ? `<span class="badge badge-habit">打卡</span>` : '';
@@ -148,8 +152,8 @@ export const UI = {
           ${descHtml}
           <div class="task-meta">
             ${habitHtml}
-            <span class="badge ${categoryMap[task.category].class}">${categoryMap[task.category].text}</span>
-            <span class="badge ${priorityMap[task.priority].class}">${priorityMap[task.priority].text}</span>
+            <span class="badge ${cObj.class}">${cObj.text}</span>
+            <span class="badge ${pObj.class}">${pObj.text}</span>
             ${dateHtml}
           </div>
           ${subtasksHtml}
