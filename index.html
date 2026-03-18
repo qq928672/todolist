@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimal Tasks.</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Import Inter Font for a minimalistic, highly readable look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Left Sidebar for Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span>📋</span>
+        <h1>Tasks.</h1>
+      </div>
+      
+      <!-- Views Filter -->
+      <div class="sidebar-section">
+        <h3 class="collapsible-header">
+          <span>視角 (Views)</span>
+          <span class="collapse-icon">▼</span>
+        </h3>
+        <ul class="filter-list collapsible-content" id="filter-list">
+          <li class="active" data-filter="all"><span>📥</span> 全部任務</li>
+          <li data-filter="today"><span>📅</span> 今日任務</li>
+          <li data-filter="active"><span>⭕</span> 未完成</li>
+          <li data-filter="completed"><span>✅</span> 已完成</li>
+          <li data-filter="habits"><span>🌱</span> 習慣養成</li>
+        </ul>
+      </div>
+
+      <!-- Categories Filter -->
+      <div class="sidebar-section">
+        <h3 class="collapsible-header">
+          <span>分類 (Categories)</span>
+          <span class="collapse-icon">▼</span>
+        </h3>
+        <ul class="category-list collapsible-content" id="category-list">
+          <li class="active" data-category="all"><span class="dot all"></span> 全部</li>
+          <li data-category="work"><span class="dot work"></span> 工作</li>
+          <li data-category="personal"><span class="dot personal"></span> 個人</li>
+          <li data-category="study"><span class="dot study"></span> 學習</li>
+        </ul>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="stats-section">
+        <div class="progress-container">
+          <div class="progress-header">
+            <span>今日進度</span>
+            <span id="progress-text">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="main-header">
+        <div class="header-titles">
+          <div class="mobile-nav">
+            <button class="btn-icon" id="btn-toggle-sidebar"><span>🍔</span></button>
+            <h2 id="current-view-title">全部任務</h2>
+          </div>
+          <p class="date-subtitle" id="current-date">Loading date...</p>
+        </div>
+        <div class="header-actions">
+          <select id="sort-select" class="sort-select">
+            <option value="created-desc">最新建立</option>
+            <option value="created-asc">最早建立</option>
+            <option value="due-asc">截止日：近到遠</option>
+            <option value="due-desc">截止日：遠到近</option>
+          </select>
+          <button class="btn-primary" id="btn-add-task">
+            <span>➕</span> 新增任務
+          </button>
+        </div>
+      </header>
+
+      <!-- Task List Container -->
+      <div class="tasks-container" id="tasks-container">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal for Add/Edit Task -->
+  <div class="modal-overlay" id="task-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">新增任務</h3>
+        <button class="btn-icon" id="btn-close-modal"><span>❌</span></button>
+      </div>
+      <form id="task-form">
+        <input type="hidden" id="task-id">
+        <div class="form-group">
+          <input type="text" id="task-title" placeholder="準備做些什麼呢？" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>備註細節 (Description)</label>
+          <textarea id="task-description" rows="3" placeholder="補充任務細節... (選填)"></textarea>
+        </div>
+        <div class="form-group">
+          <label>小任務 (Subtasks)</label>
+          <div class="subtask-input-group">
+            <input type="text" id="new-subtask-input" placeholder="新增小任務..." autocomplete="off">
+            <button type="button" class="btn-secondary" id="btn-add-subtask"><span>➕</span></button>
+          </div>
+          <ul id="modal-subtask-list" class="modal-subtask-list">
+          </ul>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>分類</label>
+            <select id="task-category">
+              <option value="work">工作</option>
+              <option value="personal">個人</option>
+              <option value="study">學習</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>優先級</label>
+            <select id="task-priority">
+              <option value="low">低</option>
+              <option value="medium">中</option>
+              <option value="high">高</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>截止日期 (打卡可不填)</label>
+            <input type="date" id="task-due-date">
+          </div>
+          <div class="form-group habit-group">
+            <label>&nbsp;</label>
+            <label class="checkbox-label" for="task-is-habit">
+              <input type="checkbox" id="task-is-habit" class="hidden-checkbox">
+              <span class="custom-checkbox"></span>
+              <span>設為每日打卡 (隔日重置)</span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel">取消</button>
+          <button type="submit" class="btn-primary">儲存任務</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Entry point for JS modules -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
